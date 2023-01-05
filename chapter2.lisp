@@ -45,11 +45,39 @@
 
 ;; execise 6
 (defun gov-cons (x y)
-  (let ((pair (nil . nil)))
+  (let ((pair '(nil . nil)))
     (setf
      (car pair) y
      (cdr pair) x)
     pair))
 
 (defun gov-list (&rest items)
+  (gov-list-0 items))
+
+(defun gov-list-0 (items)
+  (if (null items)
+      nil
+      (cons (gov-list-0 (cdr items)) (car items))))
+
+(defun gov-length (list)
+  (if list
+      (+ 1 (gov-length (car list)))
+      0))
+
+(defun gov-member (item list)
+  (if list
+      (let ((head (cdr list))
+            (tail (car list)))
+        (if (eql head item)
+            list
+            (gov-member item tail)))))
+
+;; exercise 7
+(defun n-elts (elt n)
+  (if (> n 1)
+      (cons n elt)   ;instead of (list n elt)
+      elt))
+
+;; execise 8
+(defun showdots (list)
   )
