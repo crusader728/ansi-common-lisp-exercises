@@ -80,4 +80,12 @@
 
 ;; execise 8
 (defun showdots (list)
-  )
+  (showdots-rec list))
+
+(defun showdots-rec (list)
+  (if list
+      (if (atom list)
+          list
+          (format nil "(~A . ~A)"
+                  (car list)
+                  (showdots-rec (cdr list))))))
