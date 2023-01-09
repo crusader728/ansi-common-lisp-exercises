@@ -1,0 +1,10 @@
+;;; execise 1
+(defun quarter-turn (arr)
+  (let ((dim (array-dimensions arr)))
+    (let ((n (car dim)))
+      (let ((result (make-array (list n n))))
+        (do ((row 0 (+ 1 row)))
+            ((>= row n) result)
+          (do ((col 0 (+ 1 col)))
+              ((>= col n))
+            (setf (aref result row col) (aref arr (- (- n 1) col) row))))))))
