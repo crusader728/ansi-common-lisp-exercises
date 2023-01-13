@@ -59,3 +59,35 @@
   (l nil)
   (r nil))
 
+(defun bst-rec (bst acc)
+  (if bst
+      (let ((smaller (bst-rec (node-l bst) acc))
+            (data (node-elt bst)))
+        (bst-rec (node-r bst) (cons data smaller)))
+      acc))
+
+(defun bst2lst (bst)
+  (bst-rec bst nil))
+
+;;; execise 5
+;;; same as bst-insert
+
+;;; execise 6
+(defun alist->hash (alist &key (test #'eql))
+  (let ((hash (make-hash-table :test test)))
+    (do ((lst alist (cdr lst)))
+        ((null lst))
+      (let ((pair (car lst)))
+        (setf
+         (gethash (car pair) hash) (cdr pair))))
+    hash))
+
+(defun hash->alist (hashtable)
+  (let ((acc nil))
+    (maphash #'(lambda (k v)
+                 (let ((con (cons k v)))
+                   (setf
+                    acc (cons con acc))
+                   acc))
+             hashtable)
+    acc))
