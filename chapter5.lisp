@@ -48,5 +48,33 @@
          0)))
 
 ;;; execise 5
+
+(defun hash-table-keys (ht)
+  (let ((result nil))
+    (maphash #'(lambda (k v)
+                 (push k result))
+             ht)
+    result))
+
 (defun precedes-iter (x v)
-  )
+  (let ((charMap (make-hash-table)))
+    (dotimes (i (length v))
+      (if (and (> i 0)
+               (char-equal (aref v i) x))
+          (setf (gethash (aref v (- i 1)) charMap) 1)))
+    (hash-table-keys charMap)))
+
+(defun precedes-rec (x v)
+  (let ((acc (make-hash-table)))
+    (precedes-rec-helper x v 0 acc)
+    (hash-table-keys acc)))
+
+(defun precedes-rec-helper (x v i acc)
+  (cond
+    ((= 0 i) (precedes-rec-helper x v (+ 1 i) acc))
+    ((= i (length v)) acc)
+    ((char-equal x (aref v i))
+     (progn
+       (setf (gethash (aref v (- i 1)) acc) 1)
+       (precedes-rec-helper x v (+ 1 i) acc)))
+    (t (precedes-rec-helper x v (+ 1 i) acc))))
