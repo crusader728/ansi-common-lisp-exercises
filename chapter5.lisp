@@ -78,3 +78,46 @@
        (setf (gethash (aref v (- i 1)) acc) 1)
        (precedes-rec-helper x v (+ 1 i) acc)))
     (t (precedes-rec-helper x v (+ 1 i) acc))))
+
+
+;;; execise 6
+(defun intersperse-iter (obj lst)
+  (do ((l lst (cdr l))
+       (result nil (cons obj (cons (car l) result))))
+      ((null l) (reverse (cdr result)))))
+
+(defun intersperse-rec (obj lst)
+  (let ((result (intersperse-rec-helper obj lst nil)))
+    (reverse (cdr result))))
+
+(defun intersperse-rec-helper (obj lst acc)
+  (cond
+    ((null lst) acc)
+    (t (intersperse-rec-helper obj (cdr lst) (cons obj (cons (car lst) acc))))))
+
+;;; execise 7
+(defun list-abs-1?-rec (lst)
+  (list-abs-1?-rec-helper lst t))
+
+(defun list-abs-1?-rec-helper (lst acc)
+  (cond
+    ((not acc) acc)
+    ((null lst) acc)
+    (t (let ((tail (cdr lst)))
+         (if (null tail)
+             acc
+             (let ((x (car lst))
+                   (y (car tail)))
+               (if (= 1 (abs (- x y)))
+                   (list-abs-1?-rec-helper tail acc)
+                   nil)))))))
+
+(defun list-abs-1?-do (lst)
+  (do ((tail (cdr lst) (cdr tail))
+       (head (car lst) (car tail)))
+      ((null tail) t)
+    (if (/= 1 (abs (- head (car tail))))
+        (return nil))))
+
+(defun list-abs-1?-mapc (lst)
+  )
